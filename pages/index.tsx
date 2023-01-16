@@ -1,6 +1,8 @@
 import { useState, MouseEvent } from "react";
 
 import Head from "next/head";
+import Link from 'next/link'
+
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
@@ -36,6 +38,9 @@ export default function Home(
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        <nav>
+      <Link href="/about">About</Link>
+    </nav>
         <div>
           <h1>{title}</h1>
           <div>
