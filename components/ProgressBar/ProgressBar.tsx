@@ -16,7 +16,13 @@ const StyledContainer = styled.div`
   padding: 10px;
 `;
 
-const ProgressBar: React.FC<Props> = ({ value = 50, min, max, className }) => {
+const ProgressBar: React.FC<Props> = ({
+  value = 50,
+  min,
+  max,
+  className,
+  id,
+}) => {
   //   return <progress max="100" value={value}></progress>;
 
   const progressValue = useMemo(() => {
@@ -24,7 +30,7 @@ const ProgressBar: React.FC<Props> = ({ value = 50, min, max, className }) => {
   }, [value]);
 
   return (
-    <StyledContainer>
+    <StyledContainer id={id}>
       <Typography
         styles={{
           color: "green",
