@@ -1,10 +1,11 @@
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useMemo } from "react";
 
 import Head from "next/head";
-import Link from "next/link";
 
 import styles from "@/styles/Home.module.css";
 import { ProgressBar } from "@/components/ProgressBar";
+import { Button } from "@/components/Button";
+import { Dropdown } from "@/components/Dropdown";
 
 interface Props {
   title: string;
@@ -23,12 +24,19 @@ export default function Home({
   const [progressBars, setProgressBars] = useState(defaultProgressBars);
   const [progressId, setProgressId] = useState("progress1");
 
+  const dropdownOptions = useMemo(() => {
+    return progressBars.map((progressBar) => progressBar.id);
+  }, [progressBars]);
+
   const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
 
     const _progressBars = progressBars.map((progressBar) => {
       if (progressBar.id === progressId) {
         progressBar.value += parseInt(target.dataset.value || "0");
+        if (progressBar.value < 0) {
+          progressBar.value = 0;
+        }
       }
       return progressBar;
     });
@@ -44,12 +52,9 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <nav>
-          <Link href="/about">About</Link>
-        </nav>
-        <div>
-          <h1>{title}</h1>
-          <div>
+        <div className={styles.container}>
+          <h1 style={{ marginBottom: "20px" }}>{title}</h1>
+          <div style={{ marginBottom: "20px" }}>
             {progressBars.map((progress) => (
               <ProgressBar
                 key={progress.id}
@@ -59,24 +64,24 @@ export default function Home({
             ))}
           </div>
 
-          <div>
-            <select onChange={(e) => setProgressId(e.target.value)}>
-              <option value="progress1">#progress1</option>
-              <option value="progress2">#progress2</option>
-              <option value="progress3">#progress3</option>
-            </select>
-            <button onClick={handleButtonClick} data-value="-25">
+          <div className={styles["control-wrapper"]}>
+            <Dropdown
+              onChange={(e) => setProgressId(e.target.value)}
+              options={dropdownOptions}
+            />
+            <Button dataValue={"-25"} onClick={handleButtonClick}>
               -25
-            </button>
-            <button onClick={handleButtonClick} data-value="-10">
+            </Button>
+            <Button dataValue={"-10"} onClick={handleButtonClick}>
               -10
-            </button>
-            <button onClick={handleButtonClick} data-value="+10">
+            </Button>
+
+            <Button dataValue={"+10"} onClick={handleButtonClick}>
               +10
-            </button>
-            <button onClick={handleButtonClick} data-value="+25">
+            </Button>
+            <Button dataValue={"+25"} onClick={handleButtonClick}>
               +25
-            </button>
+            </Button>
           </div>
         </div>
       </main>
