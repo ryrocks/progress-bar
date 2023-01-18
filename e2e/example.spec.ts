@@ -1,4 +1,4 @@
-// e2e/aeelmpx.spec.ts;
+// e2e/example.spec.ts;
 
 import { test, expect } from "@playwright/test";
 
@@ -11,4 +11,10 @@ test("should navigate to the about page", async ({ page }) => {
   await expect(page).toHaveURL("http://localhost:3000/about");
   // The new page should contain an h1 with "About Page"
   await expect(page.locator("h1")).toContainText("About Page");
+});
+
+test("progress1 should +10", async ({ page }) => {
+  await page.goto("http://localhost:3000/");
+  await page.click("button:text=+10");
+  await expect(page.locator("text=10")).toBeVisible();
 });

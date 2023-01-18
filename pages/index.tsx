@@ -1,32 +1,38 @@
 import { useState, MouseEvent } from "react";
 
 import Head from "next/head";
-import Link from 'next/link'
+import Link from "next/link";
 
-import Image from "next/image";
-import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import { ProgressBar } from "@/components/ProgressBar";
-
-const inter = Inter({ subsets: ["latin"] });
 
 interface Props {
   title: string;
   data: {
-    progressBars: string[];
+    progressBars: {
+      id: string;
+      value: number;
+    }[];
   };
 }
 
-export default function Home(
-  { title, data }: Props = { title: "", data: { progressBars: [] } }
-) {
-  const [value, setValue] = useState(0);
-  const [progressId, setProgressId] = useState("#progress1");
+export default function Home({
+  title,
+  data: { progressBars: defaultProgressBars },
+}: Props) {
+  const [progressBars, setProgressBars] = useState(defaultProgressBars);
+  const [progressId, setProgressId] = useState("progress1");
 
   const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
-    const value = parseInt(target.dataset.value || "0");
-    setValue((v) => v + value);
+
+    const _progressBars = progressBars.map((progressBar) => {
+      if (progressBar.id === progressId) {
+        progressBar.value += parseInt(target.dataset.value || "0");
+      }
+      return progressBar;
+    });
+    setProgressBars(_progressBars);
   };
 
   return (
@@ -39,15 +45,20 @@ export default function Home(
       </Head>
       <main className={styles.main}>
         <nav>
-      <Link href="/about">About</Link>
-    </nav>
+          <Link href="/about">About</Link>
+        </nav>
         <div>
           <h1>{title}</h1>
           <div>
-            <ProgressBar value={value} />
-            <ProgressBar value={value} />
-            <ProgressBar value={value} />
+            {progressBars.map((progress) => (
+              <ProgressBar
+                key={progress.id}
+                id={progress.id}
+                value={progress.value}
+              />
+            ))}
           </div>
+
           <div>
             <select onChange={(e) => setProgressId(e.target.value)}>
               <option value="progress1">#progress1</option>
@@ -79,7 +90,11 @@ export async function getStaticProps() {
     props: {
       title: "Progress Bar Demo",
       data: {
-        progressBars: [],
+        progressBars: [
+          { id: "progress1", value: 0 },
+          { id: "progress2", value: 0 },
+          { id: "progress3", value: 0 },
+        ],
       },
     },
   };

@@ -1,18 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import Home from "../pages/index";
 import "@testing-library/jest-dom";
-
-const title = "Progress Bar Demo";
-const data = {
-  progressBars: [],
-};
+import dataMock from "__mocks__/dataMock.js";
 
 describe("Home", () => {
   it("renders a heading", () => {
-    render(<Home title={title} data={data} />);
+    render(<Home title={dataMock.title} data={dataMock.data} />);
 
     const heading = screen.getByRole("heading", {
-      name: title,
+      name: dataMock.title,
     });
 
     expect(heading).toBeInTheDocument();

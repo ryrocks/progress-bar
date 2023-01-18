@@ -8,6 +8,7 @@ interface Props {
   min?: number;
   max?: number;
   className?: string;
+  id?: string;
 }
 
 const StyledContainer = styled.div`
