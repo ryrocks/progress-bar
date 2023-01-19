@@ -32,6 +32,8 @@ const StyledProgress = styled.progress<{ value: number }>`
       props?.value <= 100
         ? "linear-gradient(90deg, #7cafff -2.21%, #c67bff 89.35%);"
         : `red;`};
+
+    transition: width 0.5s;
   }
 `;
 
